@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}New Task{% endblock %}
+
+{% block body %}
+    <h1>Create new Task</h1>
+
+    {{ include('task/_form.html.twig') }}
+
+    <div class="d-flex gap-2 mb-3 mt-3">
+        {{ ui.btn('Back to list', path('app_task_index'), 'outline-secondary') }}
+    </div>
+{% endblock %}

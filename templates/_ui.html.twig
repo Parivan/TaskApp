@@ -1,0 +1,15 @@
+{# templates/_ui.html.twig #}
+
+{% macro btn(label, href, variant='primary', size='', extraClass='') %}
+    <a href="{{ href }}" class="btn {{ size ? 'btn-' ~ size : '' }} btn-{{ variant }} {{ extraClass|trim }}">
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro submit_btn(label, variant='danger', size='', extraClass='') %}
+    <button type="submit"
+            class="btn {{ size ? 'btn-' ~ size : '' }} btn-{{ variant }} {{ extraClass|trim }}">
+        {{ label }}
+    </button>
+{% endmacro %}
+

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}New Project{% endblock %}
+
+{% block body %}
+    <h1>Create new Project</h1>
+
+    {{ include('project/_form.html.twig') }}
+
+    {{ ui.btn('Back to list', path('app_project_index'), 'outline-secondary') }}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}Edit Team{% endblock %}
+
+{% block body %}
+    <h1>Edit Team</h1>
+
+    {{ include('team/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <div class="d-flex gap-2 mt-3">
+        {{ ui.btn('Back to list', path('app_team_index'), 'outline-secondary') }}
+        {{ include('team/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% import '_ui.html.twig' as ui %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ ui.submit_btn(button_label|default('Save'), 'primary') }}
+{{ form_end(form) }}
