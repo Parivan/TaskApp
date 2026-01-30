@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}Task{% endblock %}
+
+{% block body %}
+    <h1>Task</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ task.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ task.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ task.description }}</td>
+            </tr>
+            <tr>
+                <th>Assignee</th>
+                <td>{{ task.assignee?.name }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ task.status.label }}</td>
+            </tr>
+            <tr>
+                <th>Priority</th>
+                <td>{{ task.priority.label }}</td>
+            </tr>
+            <tr>
+                <th>Due date</th>
+                <td>{{ task.dueDate|date('Y-m-d') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2 mb-3">
+        {{ ui.btn('Back to list', path('app_task_index'), 'outline-secondary') }}
+        {{ ui.btn('Back to project', path('app_project_show', {id: task.project.id}), 'outline-secondary') }}
+
+        {{ ui.btn('Edit', path('app_task_edit', {'id': task.id}), 'primary') }}
+        {{ include('task/_delete_form.html.twig') }}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}Task index{% endblock %}
+
+{% block body %}
+    <h1>Task index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Assignee</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Due</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.assignee?.name }}</td>
+                <td>{{ task.status.label }}</td>
+                <td>{{ task.priority.label }}</td>
+                <td>{{ task.dueDate|date('Y-m-d') }}</td>
+                <td>
+                    {{ ui.btn('Show', path('app_task_show', {id: task.id}), 'outline-secondary') }}
+                    {{ ui.btn('Edit', path('app_task_edit', {id: task.id}), 'primary') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ ui.btn('Create new', path('app_task_new'), 'success') }}
+
+{% endblock %}

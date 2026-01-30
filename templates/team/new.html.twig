@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}New Team{% endblock %}
+
+{% block body %}
+    <h1>Create new Team</h1>
+
+    {{ include('team/_form.html.twig') }}
+
+    <div class="d-flex gap-2 mb-3 mt-3">
+        {{ ui.btn('Back to list', path('app_team_index'), 'outline-secondary') }}
+    </div>
+{% endblock %}

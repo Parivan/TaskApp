@@ -86,6 +86,17 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "cs:check": "vendor/bin/phpcs -q",
+        "stan": "vendor/bin/phpstan analyse",
+        "test:setup": [
+            "php bin/console doctrine:database:drop --if-exists --force --env=test",
+            "php bin/console doctrine:database:create --env=test",
+            "php bin/console doctrine:migrations:migrate --no-interaction --env=test"
+        ],
+        "test": [
+            "@test:setup",
+            "php bin/phpunit"
         ]
     },
     "conflict": {
@@ -98,7 +109,14 @@
         }
     },
     "require-dev": {
+        "captainhook/captainhook": "^5.27",
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "fakerphp/faker": "^1.24",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^12.5",
+        "squizlabs/php_codesniffer": "^4.0",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
         "symfony/debug-bundle": "8.0.*",

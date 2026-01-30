@@ -1,3 +1,7 @@
+:root {
+    --app-bg: #fff;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--app-bg);
 }

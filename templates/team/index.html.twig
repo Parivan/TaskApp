@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}Team index{% endblock %}
+
+{% block body %}
+    <h1>Team index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Members</th>
+                <th style="min-width: 250px;">Task Progress</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for team in teams %}
+            <tr>
+                <td>{{ team.id }}</td>
+                <td>
+                    <div style="max-width: 200px;" class="text-truncate" title="{{ team.name }}">
+                        {{ team.name }}
+                    </div>
+                </td>
+                <td>
+                    {{ team.memberCount }} members
+                </td>
+                <td>
+                    {% set total = team.totalTasksCount %}
+                    {% set done = team.doneTasksCount %}
+                    {% set percent = team.taskProgressPercent %}
+
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 18px;">
+                            <div class="progress-bar" role="progressbar"
+                                 style="width: {{ percent }}%;"
+                                 aria-valuenow="{{ percent }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <small>{{ percent }}%</small>
+                            </div>
+                        </div>
+                        <small class="text-muted text-nowrap">
+                            {{ done }} / {{ total }} done
+                        </small>
+                    </div>
+                </td>
+                <td>
+                    {{ ui.btn('Show', path('app_team_show', {id: team.id}), 'outline-secondary') }}
+                    {{ ui.btn('Edit', path('app_team_edit', {id: team.id}), 'primary') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ ui.btn('Create new', path('app_team_new'), 'success') }}
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% import '_ui.html.twig' as ui %}
+
+{% block title %}Team{% endblock %}
+
+{% block body %}
+    <h1>Team</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ team.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ team.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ team.Description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2 mb-3">
+        {{ ui.btn('Back to list', path('app_team_index'), 'outline-secondary') }}
+        {{ ui.btn('Edit', path('app_team_edit', {'id': team.id}), 'primary') }}
+        {{ include('team/_delete_form.html.twig') }}
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-center mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Active Projects</h5>
+                    <p class="card-text display-4 fw-bold text-primary">{{ active_projects_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-muted mb-3">Task Statistics</h5>
+                    <div class="row text-center">
+                        <div class="col">
+                            <div class="text-uppercase small text-muted">To Do</div>
+                            <div class="h3 mb-0">{{ task_stats.todo|default(0) }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="text-uppercase small text-muted">In Progress</div>
+                            <div class="h3 mb-0 text-info">{{ task_stats.in_progress|default(0) }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="text-uppercase small text-muted">Done</div>
+                            <div class="h3 mb-0 text-success">{{ task_stats.done|default(0) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Team members</h2>
+
+    {% if team.members is empty %}
+        <div class="text-muted">
+            No members in this team.
+        </div>
+    {% else %}
+        <div class="table-responsive mt-2">
+            <table class="table table-sm table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in team.members %}
+                    <tr>
+                        <td class="fw-semibold">{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {{ user.role.label() }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
