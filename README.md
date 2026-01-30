@@ -62,7 +62,7 @@ Make sure the database container is running before continuing.
 ### 3) Environment configuration
 Create a local environment file:
 ```bash
-cp .env .env.local
+cp .env.example .env
 ```
 
 Example database configuration:
