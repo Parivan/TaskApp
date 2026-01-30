@@ -2,13 +2,19 @@
 
 namespace App\Entity;
 
+use App\Enum\TaskStatus;
 use App\Repository\TeamRepository;
+use App\Entity\Project;
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Index(name: 'idx_team_name', columns: ['name'])]
+#[UniqueEntity(fields: ['name'], message: 'This team name is already taken. Please choose another one.')]
 class Team
 {
     #[ORM\Id]
@@ -22,7 +28,13 @@ class Team
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
     private Collection $members;
 
+
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The team name cannot be longer than {{ limit }} characters.'
+    )]
+    #[Assert\NotBlank(message: 'The team name cannot be empty.')]
     private ?string $name = null;
 
     /**
@@ -30,6 +42,9 @@ class Team
      */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'team')]
     private Collection $projects;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -102,10 +117,55 @@ class Team
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->name ?? '';
     }
+    public function getMemberCount(): int
+    {
+        return $this->members->count();
+    }
 
+    public function getTotalTasksCount(): int
+    {
+        $count = 0;
+        foreach ($this->projects as $project) {
+            $count += $project->getTasks()->count();
+        }
+        return $count;
+    }
 
+    public function getDoneTasksCount(): int
+    {
+        $count = 0;
+        foreach ($this->projects as $project) {
+            foreach ($project->getTasks() as $task) {
+                if ($task->getStatus() === TaskStatus::DONE) {
+                    $count++;
+                }
+            }
+        }
+        return $count;
+    }
+
+    public function getTaskProgressPercent(): int
+    {
+        $total = $this->getTotalTasksCount();
+        if ($total === 0) {
+            return 0;
+        }
+
+        return (int) round(($this->getDoneTasksCount() / $total) * 100);
+    }
 }

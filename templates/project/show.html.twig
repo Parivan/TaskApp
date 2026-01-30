@@ -13,12 +13,22 @@
                 <td>{{ project.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
-                <td>{{ project.name }}</td>
+                <th>Title</th>
+                <td>{{ project.title }}</td>
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{ project.status.label }}</td>
+                <td>
+                    {{ project.status.label }}
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ project.Description }}</td>
+            </tr>
+            <tr>
+                <th>Team</th>
+                <td>{{ project.Team.name }}</td>
             </tr>
         </tbody>
     </table>

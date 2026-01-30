@@ -13,6 +13,7 @@
                 <th>Title</th>
                 <th>Status</th>
                 <th>Priority</th>
+                <th>Due</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,6 +24,7 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.status.label }}</td>
                 <td>{{ task.priority.label }}</td>
+                <td>{{ task.dueDate|date('Y-m-d') }}</td>
                 <td>
                     {{ ui.btn('Show', path('app_task_show', {id: task.id}), 'outline-secondary') }}
                     {{ ui.btn('Edit', path('app_task_edit', {id: task.id}), 'primary') }}

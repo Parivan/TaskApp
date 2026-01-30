@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use App\Enum\UserRole;
 use App\Repository\UserRepository;
+use App\Entity\Team;
+use App\Entity\Task;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Index(name: 'idx_user_name', columns: ['name'])]
+#[UniqueEntity(fields: ['email'], message: 'This email is already registered.')]
 class User
 {
     #[ORM\Id]
@@ -18,17 +23,34 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'The email cannot be empty.')]
+    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The email cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'The name cannot be empty.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The name cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 32, enumType: UserRole::class)]
     private ?UserRole $role = null;
 
+    /**
+     * @var Collection<int, Team>
+     */
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
     private Collection $teams;
 
+    /**
+     * @var Collection<int, Task>
+     */
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignee')]
     private Collection $tasks;
 
@@ -130,6 +152,4 @@ class User
     {
         return $this->name ?? '';
     }
-
-
 }

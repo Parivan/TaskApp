@@ -19,8 +19,10 @@
         {% for project in projects %}
             <tr>
                 <td>{{ project.id }}</td>
-                <td>{{ project.name }}</td>
-                <td>{{ project.status.label }}</td>
+                <td>{{ project.title }}</td>
+                <td>
+                    {{ project.status.label }}
+                </td>
                 <td class="text-nowrap">
                     {{ ui.btn('Show', path('app_project_show', {id: project.id}), 'outline-secondary') }}
                     {{ ui.btn('Edit', path('app_project_edit', {id: project.id}), 'primary') }}

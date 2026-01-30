@@ -4,11 +4,16 @@ namespace App\Entity;
 
 use App\Enum\ProjectStatus;
 use App\Repository\ProjectRepository;
+use App\Entity\Task;
+use App\Entity\Team;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[UniqueEntity(fields: ['title'], message: 'This project title is already taken.')]
 class Project
 {
     #[ORM\Id]
@@ -17,10 +22,18 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    private ?string $name = null;
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The project title cannot be longer than {{ limit }} characters.'
+    )]
+    #[Assert\NotBlank(message: 'The project title cannot be empty.')]
+    private ?string $title = null;
 
     #[ORM\Column(length: 32, enumType: ProjectStatus::class)]
     private ?ProjectStatus $status = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
@@ -42,14 +55,14 @@ class Project
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): static
+    public function setTitle(string $title): static
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -62,6 +75,17 @@ class Project
     public function setStatus(ProjectStatus $status): static
     {
         $this->status = $status;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -108,7 +132,6 @@ class Project
 
     public function __toString(): string
     {
-        return $this->name ?? '';
+        return $this->title ?? '';
     }
-
 }

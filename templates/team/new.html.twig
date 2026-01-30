@@ -8,5 +8,7 @@
 
     {{ include('team/_form.html.twig') }}
 
-    {{ ui.btn('Back to list', path('app_team_index'), 'outline-secondary') }}
+    <div class="d-flex gap-2 mb-3 mt-3">
+        {{ ui.btn('Back to list', path('app_team_index'), 'outline-secondary') }}
+    </div>
 {% endblock %}

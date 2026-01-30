@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Enum\TaskStatus;
 use App\Enum\TaskPriority;
 use App\Repository\TaskRepository;
+use App\Entity\Project;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -16,6 +19,11 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The task title cannot be longer than {{ limit }} characters.'
+    )]
+    #[Assert\NotBlank(message: 'The task title cannot be empty.')]
     private ?string $title = null;
 
     #[ORM\Column(length: 32, enumType: TaskStatus::class)]
@@ -23,6 +31,12 @@ class Task
 
     #[ORM\Column(length: 32, enumType: TaskPriority::class)]
     private ?TaskPriority $priority = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $dueDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
@@ -71,6 +85,28 @@ class Task
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getDueDate(): ?\DateTimeImmutable
+    {
+        return $this->dueDate;
+    }
+
+    public function setDueDate(?\DateTimeImmutable $dueDate): static
+    {
+        $this->dueDate = $dueDate;
+        return $this;
+    }
+
     public function getProject(): ?Project
     {
         return $this->project;
@@ -98,6 +134,4 @@ class Task
     {
         return $this->title ?? '';
     }
-
-
 }

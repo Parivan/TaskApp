@@ -11,6 +11,8 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Members</th>
+                <th style="min-width: 250px;">Task Progress</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,7 +20,34 @@
         {% for team in teams %}
             <tr>
                 <td>{{ team.id }}</td>
-                <td>{{ team.name }}</td>
+                <td>
+                    <div style="max-width: 200px;" class="text-truncate" title="{{ team.name }}">
+                        {{ team.name }}
+                    </div>
+                </td>
+                <td>
+                    {{ team.memberCount }} members
+                </td>
+                <td>
+                    {% set total = team.totalTasksCount %}
+                    {% set done = team.doneTasksCount %}
+                    {% set percent = team.taskProgressPercent %}
+
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 18px;">
+                            <div class="progress-bar" role="progressbar"
+                                 style="width: {{ percent }}%;"
+                                 aria-valuenow="{{ percent }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <small>{{ percent }}%</small>
+                            </div>
+                        </div>
+                        <small class="text-muted text-nowrap">
+                            {{ done }} / {{ total }} done
+                        </small>
+                    </div>
+                </td>
                 <td>
                     {{ ui.btn('Show', path('app_team_show', {id: team.id}), 'outline-secondary') }}
                     {{ ui.btn('Edit', path('app_team_show', {id: team.id}), 'primary') }}
@@ -26,7 +55,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

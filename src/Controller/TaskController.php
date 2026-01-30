@@ -28,11 +28,13 @@ final class TaskController extends AbstractController
     {
         $task = new Task();
 
-        $projectId = $request->query->get('project');
-        if ($projectId) {
-            $project = $projectRepository->find($projectId);
-            if ($project) {
-                $task->setProject($project);
+        if ($request->isMethod('GET')) {
+            $projectId = $request->query->get('project');
+            if ($projectId) {
+                $project = $projectRepository->find($projectId);
+                if ($project) {
+                    $task->setProject($project);
+                }
             }
         }
 

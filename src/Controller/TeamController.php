@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Manager\TeamManager;
+use App\Repository\ProjectRepository;
+use App\Repository\TaskRepository;
 use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,10 +44,12 @@ final class TeamController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_team_show', methods: ['GET'])]
-    public function show(Team $team): Response
+    public function show(Team $team, ProjectRepository $projectRepository, TaskRepository $taskRepository): Response
     {
         return $this->render('team/show.html.twig', [
             'team' => $team,
+            'active_projects_count' => $projectRepository->countActiveProjects($team),
+            'task_stats' => $taskRepository->countTasksByStatus($team),
         ]);
     }
 
