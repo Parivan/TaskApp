@@ -40,7 +40,7 @@ class Team
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'team')]
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'team', cascade: ['remove'], orphanRemoval: true)]
     private Collection $projects;
 
     #[ORM\Column(type: 'text', nullable: true)]

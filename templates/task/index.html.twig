@@ -11,6 +11,7 @@
             <tr>
                 <th>Id</th>
                 <th>Title</th>
+                <th>Assignee</th>
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Due</th>
@@ -22,6 +23,7 @@
             <tr>
                 <td>{{ task.id }}</td>
                 <td>{{ task.title }}</td>
+                <td>{{ task.assignee?.name }}</td>
                 <td>{{ task.status.label }}</td>
                 <td>{{ task.priority.label }}</td>
                 <td>{{ task.dueDate|date('Y-m-d') }}</td>

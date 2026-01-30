@@ -21,6 +21,10 @@
                 <td>{{ task.description }}</td>
             </tr>
             <tr>
+                <th>Assignee</th>
+                <td>{{ task.assignee?.name }}</td>
+            </tr>
+            <tr>
                 <th>Status</th>
                 <td>{{ task.status.label }}</td>
             </tr>

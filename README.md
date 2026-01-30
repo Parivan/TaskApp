@@ -45,21 +45,7 @@ A simple task management application built with Symfony 8 and Doctrine ORM.
 
 ## Installation & Setup
 
-### 1) Install PHP dependencies
-```bash
-composer install
-```
-
-### 2) Start database using Docker Compose
-The application uses **MySQL 8** via Docker Compose for local development.
-
-```bash
-docker compose up -d
-```
-
-Make sure the database container is running before continuing.
-
-### 3) Environment configuration
+### 1) Environment configuration
 Create a local environment file:
 ```bash
 cp .env.example .env
@@ -69,6 +55,20 @@ Example database configuration:
 ```env
 DATABASE_URL="mysql://task_app:task_app@127.0.0.1:3306/task_app?serverVersion=8.0"
 ```
+
+### 2) Install PHP dependencies
+```bash
+composer install
+```
+
+### 3) Start database using Docker Compose
+The application uses **MySQL 8** via Docker Compose for local development.
+
+```bash
+docker compose up -d
+```
+
+Make sure the database container is running before continuing.
 
 ### 4) Database setup
 ```bash
